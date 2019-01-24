@@ -1,0 +1,91 @@
+﻿@model SkyriseRecruitWebAplication.Models.ViewModel
+
+@{
+    ViewBag.Title = "Home Page";
+}
+<br />
+@if (ViewBag.Error != null)
+{
+    <div class="alert alert-dismissible alert-danger">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <strong>Error!</strong> @ViewBag.Error
+    </div>}
+
+
+<div class="row">
+    <div class="col-sm-8">
+
+
+        @if (Model != null && !Model.Result.Error)
+        {
+
+            <div class="row">
+                <div class="col">
+                    <h2>@Model.Result.Title</h2>
+                </div>
+                <div class="col">
+                    @if (!Model.Result.Lead_image_url.IsEmpty())
+                    {
+                        <img src="@Model.Result.Lead_image_url">}
+                </div>
+            </div>
+            <br />
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <a href="#statistics" data-toggle="collapse"><h3 class="panel-title">Statystyki</h3></a>
+                </div>
+                <div class="panel-body collapse" id="statistics">
+                    @foreach (var item in Model.ListOfOccurence)
+                    {
+
+                        <span class="badge badge-primary">
+                            @item.Key - @item.Value
+                        </span>
+                        <br />
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-striped" role="progressbar" style="width:@(item.Value*100/Model.MaxValue)%" aria-valuenow="@(item.Value*100/Model.MaxValue).toString()" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div><br />
+
+
+                    }
+                </div>
+            </div>
+
+            <br />
+            <div class="pre-scrollable">
+                <p>
+                    @Model.Result.Content
+                </p>
+            </div>
+
+        }
+
+    </div>
+
+
+
+    @if (Model != null)
+    {
+        <div class="col-sm-4">
+
+            <div class="card">
+                <h3 class="card-header">Informacje</h3>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">Autor: @Model.Result.Author</li>
+                    <li class="list-group-item">Data publikacji: @Model.Result.Date_published</li>
+                    <li class="list-group-item">Domena: @Model.Result.Domain</li>
+                    <li class="list-group-item pre-scrollable">Opis: @Model.Result.Excerpt</li>
+                    <li class="list-group-item"><a href=@Model.Result.Next_page_url class="card-link">Next page</a></li>
+                    <li class="list-group-item">Direction: @Model.Result.Direction</li>
+                    <li class="list-group-item">Dek: @Model.Result.Dek</li>
+
+
+
+                </ul>
+            </div>
+
+        </div>
+    }
+
+</div>
